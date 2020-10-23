@@ -1,12 +1,20 @@
 <?php
+@define("PAGE_TYPE", "static");
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-require("class.php");
+require("GroupEdit.php");
 ?>
 
 <?
 $ob = new GroupEdit(array("IBLOCK_ID" => 28));
 $sections = $ob->getSections();
 $props = $ob->getProperties();
+
+function left_margin($depth) {
+	$margin = '';
+	if ($depth == 2) $margin = '&nbsp;&nbsp;&nbsp;&nbsp;';
+	return $margin;
+}
+
 ?>
 
 <?
@@ -49,7 +57,7 @@ $props = $ob->getProperties();
 		<select name="section">
 			<option disabled selected>Выберите раздел</option>
 			<?foreach($sections as $section):?>
-				<option value="<?=$section['ID']?>"><?=$section['NAME']?></option>
+				<option value="<?=$section['ID']?>"><?=left_margin($section['DEPTH_LEVEL'])?><?=$section['NAME']?></option>
 			<?endforeach?>
 		</select>
 	</p>

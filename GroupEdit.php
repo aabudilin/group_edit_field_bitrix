@@ -1,4 +1,4 @@
-<?
+=> <?
 
 \Bitrix\Main\Loader::includeModule('iblock');
 
@@ -11,7 +11,7 @@ class GroupEdit {
 	*/
 	protected $arParams;
 	protected $field;
-	protected $limit = 2000;
+	protected $limit = 5000;
 	protected $log = array('count' => 0, 'items' => array());
 	protected $is_logged = true;
 	protected $mapProperties = array();
@@ -26,9 +26,10 @@ class GroupEdit {
 		$rsSection = \Bitrix\Iblock\SectionTable::getList(array(
 		    	'filter' => array(
 	        		'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
-	        		'DEPTH_LEVEL' => 2,
-	    		), 
-	    		'select' =>  array('ID','NAME'),
+	        		'DEPTH_LEVEL' => array(1,2),
+	    		),
+				'order' => array('LEFT_MARGIN' => 'ASC'),
+	    		'select' =>  array('ID','NAME', 'DEPTH_LEVEL'),
 	    		'cache' => ['ttl' => 3600],
 		));
 		while ($arSection = $rsSection->fetch()) {
