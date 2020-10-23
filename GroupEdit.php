@@ -1,4 +1,4 @@
-<?
+=> <?
 
 \Bitrix\Main\Loader::includeModule('iblock');
 
@@ -116,6 +116,7 @@ class GroupEdit {
 	{
 		$filter = array ();
 		$filter['IBLOCK_ID'] = $this->arParams['IBLOCK_ID'];
+		$filter['INCLUDE_SUBSECTIONS'] = 'Y';
 		if (!empty($post['section'])) {
 			$filter['IBLOCK_SECTION_ID'] = $post['section'];
 		}
