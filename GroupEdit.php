@@ -115,10 +115,10 @@ class GroupEdit {
 	public function process(array $post)
 	{
 		$filter = array ();
-		$filter['IBLOCK_ID'] = $this->arParams['IBLOCK_ID'];
-		//$filter['INCLUDE_SUBSECTIONS'] = 'Y'; не работает
+		$filter['=IBLOCK_ID'] = $this->arParams['IBLOCK_ID'];
+		$filter['INCLUDE_SUBSECTIONS'] = 'Y';
 		if (!empty($post['section'])) {
-			$filter['IBLOCK_SECTION_ID'] = $post['section'];
+			$filter['=SECTION_ID'] = $post['section'];
 		}
 
 		$ids = $this->getMap($filter);
@@ -136,15 +136,20 @@ class GroupEdit {
 	}
 
 	protected function getMap($filter) {
-		$dbItems = \Bitrix\Iblock\ElementTable::getList(array(
+		/*$dbItems = \Bitrix\Iblock\ElementTable::getList(array(
 			'order' => array('SORT' => 'ASC'), // сортировка
 			'select' => array('ID'),
 			'filter' => $filter, 
 			'limit' => $this->limit,
 			)
-		);
-		
-		return $dbItems->fetchAll();
+		);*/
+
+		$res = CIBlockElement::GetList(Array(), $filter, false, Array("nPageSize"=>2000), array('ID'));
+		while($data = $res->Fetch()) {
+			$result[] = $data;
+		}
+
+		return $result;
 	}
 
 	public function getLog(): array
