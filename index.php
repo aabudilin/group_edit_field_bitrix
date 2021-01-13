@@ -47,6 +47,7 @@ function left_margin($depth) {
 	form input {
 		width:100%;
 		height:50px;
+		margin-bottom:15px;
 	}
 </style>
 
@@ -62,15 +63,51 @@ function left_margin($depth) {
 		</select>
 	</p>
 	<p>
-		<select name="field">
+		<select name="field" id="selectField">
 			<option disabled selected>Свойство</option>
 			<?foreach($props as $prop):?>
 				<option value="<?=$prop['CODE']?>"><?=$prop['NAME']?></option>
 			<?endforeach?>
 		</select>
 	</p>
-	<p><input type="text" name="value" placeholder="Новое значение свойства" /></p>
+	<p id="resultField"></p>
+	<!--<input type="text" name="value" placeholder="Новое значение свойства" />-->
 	<button type="submit" class="btn btn-primary">Обновить свойство</button>
 </form>
+
+<script>
+	selectField.onchange = async () => {
+		let code = selectField.value;
+		let json = await getField(code);
+		resultField.innerHTML = renderInput(json);
+	}
+
+	async function getField(code) {
+		let url = '/manager/group_edit/get_field.php';
+		let params = '?code=' + code;
+		let response = await fetch(url + params);
+		if (response.ok) {
+			return await response.json();
+		} else {
+		  console.log("Ошибка HTTP: " + response.status);
+		  return false;
+		}
+	}
+
+	function renderInput(json) {
+		let template = '<input type="text" name="value" placeholder="Новое значение свойства" />';
+		let result = '';
+		//if(json.PROPERTY_TYPE != 'L'){}
+		if(json.MULTIPLE == 'Y'){
+			template = '<input type="text" name="value[]" placeholder="Новое значение свойства" />';
+			for(let i = 0; i < 5; i++) {
+				result = result + template;
+			}
+		} else {
+			result = template;
+		}
+		return result;
+	}
+</script>
 
 <?php require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php"); ?>
