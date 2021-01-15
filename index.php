@@ -11,7 +11,9 @@ $props = $ob->getProperties();
 
 function left_margin($depth) {
 	$margin = '';
-	if ($depth == 2) $margin = '&nbsp;&nbsp;&nbsp;&nbsp;';
+	if ($depth == 2) $margin = '..';
+	if ($depth == 3) $margin = '....';
+	if ($depth == 4) $margin = '......';
 	return $margin;
 }
 
@@ -49,6 +51,10 @@ function left_margin($depth) {
 		height:50px;
 		margin-bottom:15px;
 	}
+
+	.bold {
+		font-weight:bold;
+	}
 </style>
 
 <h1>Групповое обновление свойств</h1>
@@ -58,7 +64,10 @@ function left_margin($depth) {
 		<select name="section">
 			<option disabled selected>Выберите раздел</option>
 			<?foreach($sections as $section):?>
-				<option value="<?=$section['ID']?>"><?=left_margin($section['DEPTH_LEVEL'])?><?=$section['NAME']?></option>
+				<option value="<?=$section['ID']?>" <?=($section['DEPTH_LEVEL'] == 1 ? 'class="bold"' : '')?>>
+					<?=left_margin($section['DEPTH_LEVEL'])?>
+					<?=$section['NAME']?>
+				</option>
 			<?endforeach?>
 		</select>
 	</p>
