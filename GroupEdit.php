@@ -26,7 +26,7 @@ class GroupEdit {
 		$rsSection = \Bitrix\Iblock\SectionTable::getList(array(
 		    	'filter' => array(
 	        		'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
-	        		'DEPTH_LEVEL' => array(1,2),
+	        		'DEPTH_LEVEL' => array(1,2,3,4),
 	    		),
 				'order' => array('LEFT_MARGIN' => 'ASC'),
 	    		'select' =>  array('ID','NAME', 'DEPTH_LEVEL'),
